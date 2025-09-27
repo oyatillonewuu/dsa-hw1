@@ -8,30 +8,30 @@
 Employee::Employee(
     int id,
     std::string name,
-    std::string birth_date,
-    std::string ph_number,
-    std::string address,
+    std::string birthDate,
+    std::string phNumber,
+    std::string address
 )
     : m_id{ id }
     , m_name{ name }
-    , m_birth_date{ birth_date }
-    , m_ph_number{ ph_number }
+    , m_birthDate{ birthDate }
+    , m_phNumber{ phNumber }
     , m_address{ address }
     , next{ nullptr }
 {};
 
-void Employee::print_info() const {
-    print_line();
-    std::cout << "ID: " << this->id;
-    print_line();
-    std::cout << "Name: " << this->name;
-    print_line();
-    std::cout << "Birth date: " << this->birth_date;
-    print_line();
-    std::cout << "Phone number: " << this->ph_number;
-    print_line();
-    std::cout << "Address: " << this->address;
-    print_line();
+void Employee::printInfo() const {
+    printLine();
+    std::cout << "ID: " << this->m_id;
+    printLine();
+    std::cout << "Name: " << this->m_name;
+    printLine();
+    std::cout << "Birth date: " << this->m_birthDate;
+    printLine();
+    std::cout << "Phone number: " << this->m_phNumber;
+    printLine();
+    std::cout << "Address: " << this->m_address;
+    printLine();
 }
 
 
@@ -40,7 +40,15 @@ EmpLinkedList::EmpLinkedList()
     , lastId{ 0 }
 {};
 
-void validateAccess() const {
+EmpLinkedList::~EmpLinkedList() {
+    while (head) {
+        Employee* tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+}
+
+void EmpLinkedList::validateAccess() const {
     if (isEmpty()) {
         throw std::runtime_error("Illegal access: list is empty.");
     }
@@ -65,80 +73,82 @@ const Employee* EmpLinkedList::back() const {
     return mover;
 }
 
-void EmpLinkedList::print_list() const {
-    print_line();
+void EmpLinkedList::printList() const {
+    printLine();
     std::cout << "Employee List";
-    print_line();
-    print_div();
+    printLine();
+    printDivLine();
 
     if (isEmpty()) {
         std::cout << "(empty)" << std::endl;
-        print_div();
+        printDivLine();
         return;
     }
 
     Employee* employee = head;
 
     while (employee) {
-        employee->print_info();
-        print_div();
+        employee->printInfo();
+        printDivLine();
         employee = employee->next;
     }
 
-    print_div();
+    printDivLine();
     return;
 }
 
 void EmpLinkedList::addFront(
     std::string name,
-    std::string birht_date,
-    std::string ph_number,
+    std::string birthDate,
+    std::string phNumber,
     std::string address
 ) {
     int nextId = lastId + 1;
     Employee* newEmp = new Employee(
         nextId,
-        name, birth_date,
-        ph_number, address
+        name, birthDate,
+        phNumber, address
     );
 
     if (isEmpty()) {
         head = newEmp;
-        return;
+    } else {
+        newEmp->next = head;
+        head = newEmp;
     }
-
-    newEmp->next = head;
-    head = newEmp;
+    lastId = nextId;
     return;
 }
 
 void EmpLinkedList::addBack(
-    std::strng name,
-    std::string birth_date,
-    std::string ph_number,
+    std::string name,
+    std::string birthDate,
+    std::string phNumber,
     std::string address
 ) {
     int nextId = lastId + 1;
 
     Employee* newEmp = new Employee(
         nextId,
-        name, birth_date,
-        ph_number, address
+        name, birthDate,
+        phNumber, address
     );
 
     if (isEmpty()) {
         head = newEmp;
-        return;
+    }
+    else {
+        Employee* lastNode = head;
+
+        while (lastNode->next) {
+            lastNode = lastNode->next;
+        }
+
+        lastNode->next = newEmp;
+        lastNode = newEmp;
     }
 
-    Employee* lastNode = head;
-
-    while (lastNode->next) {
-        lastNode = lastNode->next;
-    }
-
-    lastNode->next = newEmp;
-    lastNode = newEmp;
+    lastId = nextId;
     return;
 }
 
@@ -171,16 +181,16 @@ void EmpLinkedList::deleteBack() {
 void EmpLinkedList::find(int id) const {
     if (!isEmpty()) {
         Employee* mover = head;
-        while (mover->next) {
-            if (mover->id == id) {
-                mover->print_info();
+        while (mover) {
+            if (mover->m_id == id) {
+                mover->printInfo();
                 return;
             }
             mover = mover->next;
         }
     }
     std::cout << "Find: employee witd ID " << id << " was not found.";
-    print_line();
+    printLine();
 }
 
 void EmpLinkedList::modify(
@@ -191,74 +201,79 @@ void EmpLinkedList::modify(
     std::string newAddress
 ) {
     if (emp == nullptr) {
-        throw runtime_error("Error: tried to modify non-existent employee record.");
+        throw std::runtime_error("Error: tried to modify non-existent employee record.");
     }
 
-    emp->name = newName;
-    emp->birth_date = newBirthDate;
-    emp->ph_number = newPhoneNumber;
-    emp->address = newAddress;
+    emp->m_name = newName;
+    emp->m_birthDate = newBirthDate;
+    emp->m_phNumber = newPhoneNumber;
+    emp->m_address = newAddress;
 
     return;
 }
 
 void EmpLinkedList::add(
     std::string name,
-    std::string birth_date,
-    std::string ph_number,
+    std::string birthDate,
+    std::string phNumber,
     std::string address
 )
 {
-
-    Employee* emp = Employee(
-        lastId + 1,
+    int nextId = lastId + 1;
+    Employee* emp = new Employee(
+        nextId,
         name,
-        birth_date,
-        ph_number,
+        birthDate,
+        phNumber,
         address
     );
 
     if (isEmpty()) {
         head = emp;
+        lastId = nextId;
         return;
     }
-    int trialLowId = emp->id - 1;
-    int posInx = 0;
 
-    Employee* prevCandidate;
-
-
+    int lowId = nextId - 1;
+    Employee* prevCandidate = nullptr;
     Employee* mover = head;
 
     while (mover) {
         if (!prevCandidate) {
-            if (mover->id <= trialLowId) {
+            if (mover->m_id <= lowId) {
                 prevCandidate = mover;
             }
         } else {
-            if (mover->id <= trialLowId && mover->id >= prevCandidate->id) {
+            if (mover->m_id <= lowId && mover->m_id >= prevCandidate->m_id) {
                 prevCandidate = mover;
             }
         }
         mover = mover->next;
-        posInx++;
     }
 
     if (!prevCandidate) {
         emp->next = head;
         head = emp;
-        return;
+    } else {
+        emp->next = prevCandidate->next;
+        prevCandidate->next = emp;
     }
 
-    emp->next = prevCandidate->next;
-    prevCandidate->next = emp;
+    lastId = nextId;
     return;
 }
 
 void EmpLinkedList::deleteNode(Employee * emp) {
     if (emp == nullptr) {
-        throw runtime_error("Error: tried to remove non-existent employee record.");
+        throw std::runtime_error("Error: tried to remove non-existent employee record.");
     }
+
+    if (emp == head) {
+        head = head->next;
+        delete emp;
+        return;
+    }
+
     Employee* prev = head;
 
     while (prev->next != emp) {
@@ -267,6 +282,7 @@ void EmpLinkedList::deleteNode(Employee * emp) {
 
     prev->next = emp->next;
     delete emp;
+    return;
 }
 
 int EmpLinkedList::count() const {

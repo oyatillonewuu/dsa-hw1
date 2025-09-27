@@ -1,13 +1,14 @@
+#include <iostream>
 #include "utils.h"
 
 
-void print_div() {
+void printDivLine() {
     for (int i = 0; i < 50; i++) {
         std::cout << "-";
     }
-    print_line();
+    printLine();
 }
 
-void print_line() {
+void printLine() {
     std::cout << std::endl;
 }
