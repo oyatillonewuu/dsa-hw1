@@ -10,7 +10,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <string>
-#include "../data_structures/employeeds.h"
+#include "../src/data_structures/employeeds.h"
 
 // Test counter
 int testsPassed = 0;
