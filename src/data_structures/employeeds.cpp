@@ -22,18 +22,37 @@ Employee::Employee(
 
 void Employee::printInfo() const {
     printLine();
-    std::cout << "ID: " << this->m_id;
+    std::cout << ORANGE << "ID: " << RESET << this->m_id;
     printLine();
-    std::cout << "Name: " << this->m_name;
+    std::cout << ORANGE << "Name: " << RESET << this->m_name;
     printLine();
-    std::cout << "Birth date: " << this->m_birthDate;
+    std::cout << ORANGE << "Birth date: " << RESET << this->m_birthDate;
     printLine();
-    std::cout << "Phone number: " << this->m_phNumber;
+    std::cout << ORANGE << "Phone number: " << RESET << this->m_phNumber;
     printLine();
-    std::cout << "Address: " << this->m_address;
+    std::cout << ORANGE << "Address: " << RESET << this->m_address;
     printLine();
 }
 
+int Employee::getId() const {
+    return m_id;
+}
+
+std::string Employee::getName() const {
+    return m_name;
+}
+
+std::string Employee::getBirthDate() const {
+    return m_birthDate;
+}
+
+std::string Employee::getPhoneNumber() const {
+    return m_phNumber;
+}
+
+std::string Employee::getAddress() const {
+    return m_address;
+}
 
 EmpLinkedList::EmpLinkedList()
     : head{ nullptr }
@@ -58,12 +77,12 @@ bool EmpLinkedList::isEmpty() const {
     return head == nullptr;
 }
 
-const Employee* EmpLinkedList::front() const {
+Employee* EmpLinkedList::front() const {
     validateAccess();
     return head;
 }
 
-const Employee* EmpLinkedList::back() const {
+Employee* EmpLinkedList::back() const {
     validateAccess();
     Employee* mover = head;
 
@@ -75,13 +94,14 @@ const Employee* EmpLinkedList::back() const {
 
 void EmpLinkedList::printList() const {
     printLine();
-    std::cout << "Employee List";
+    std::cout << ORANGE BOLD << "Employee List" << RESET;
     printLine();
     printDivLine();
 
     if (isEmpty()) {
-        std::cout << "(empty)" << std::endl;
+        std::cout << BOLD << RED<< "(empty)" << RESET << std::endl;
         printDivLine();
+        printLine();
         return;
     }
 
@@ -93,7 +113,8 @@ void EmpLinkedList::printList() const {
         employee = employee->next;
     }
 
-    printDivLine();
+    printLine();
+
     return;
 }
 
@@ -178,19 +199,24 @@ void EmpLinkedList::deleteBack() {
     delete target;
 }
 
-void EmpLinkedList::find(int id) const {
+Employee* EmpLinkedList::find(int id, bool printInfo) const {
     if (!isEmpty()) {
         Employee* mover = head;
         while (mover) {
             if (mover->m_id == id) {
-                mover->printInfo();
-                return;
+                if (printInfo) {
+                    mover->printInfo();
+                }
+                return mover;
             }
             mover = mover->next;
         }
     }
-    std::cout << "Find: employee witd ID " << id << " was not found.";
+    std::cout << RED << BOLD "Employee witd ID " << RESET;
+    std::cout << ORANGE << BOLD << id << RESET;
+    std::cout << RED << BOLD << " was not found." << RESET;
     printLine();
+    return nullptr;
 }
 
 void EmpLinkedList::modify(
@@ -295,4 +321,8 @@ int EmpLinkedList::count() const {
         mover = mover->next;
     }
     return count;
+}
+
+int EmpLinkedList::getLastId() const {
+    return lastId;
 }

@@ -4,9 +4,6 @@
 #include <set>
 #include <functional>
 #include "../data_structures/employeeds.h"
-#define EXIT 1
-#define SUCCESS 0
-#define FAIL 2
 
 using CommandFunction = int (*)(EmpLinkedList&);
 
@@ -18,7 +15,7 @@ private:
 public:
     Command(std::string name, CommandFunction);
     std::string getName() const;
-    void exec(EmpLinkedList&) const;
+    int exec(EmpLinkedList&) const;
 };
 
 

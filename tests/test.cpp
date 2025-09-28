@@ -207,14 +207,14 @@ void testFindOperations() {
     list.addFront("Charlie", "1988-03-12", "555-0003", "300 Elm St");
     
     std::cout << "Testing find operations (check output manually):" << std::endl;
-    list.find(1);  // Should find Alice
-    list.find(2);  // Should find Bob
-    list.find(3);  // Should find Charlie
-    list.find(999); // Should not find
+    list.find(1, true);  // Should find Alice
+    list.find(2, true);  // Should find Bob
+    list.find(3, true);  // Should find Charlie
+    list.find(999, true); // Should not find
     
     // Test find on empty list
     EmpLinkedList emptyList;
-    emptyList.find(1);
+    emptyList.find(1, true);
 }
 
 void testModifyOperations() {

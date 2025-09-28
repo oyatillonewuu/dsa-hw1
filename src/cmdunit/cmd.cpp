@@ -19,8 +19,8 @@ std::string Command::getName() const {
     return m_name;
 }
 
-void Command::exec(EmpLinkedList& employeeList) const {
-    m_funcPtr(employeeList);
+int Command::exec(EmpLinkedList& employeeList) const {
+    return m_funcPtr(employeeList);
 }
 
 int CommandManager::init() {
@@ -43,7 +43,7 @@ int CommandManager::listen() {
         std::cout << RED << BOLD << "CommandManager::init was not called.";
         std::cout << RESET;
         printLine();
-        return -1;
+        return FAIL;
     }
 
     printLine();
@@ -92,6 +92,7 @@ int CommandManager::execCommand(std::vector<std::string>& commandVec) {
         return FAIL;
     }
     std::string command = commandVec.front();
+    int statusCode = SUCCESS;
 
     if (command == "help") {
         printCommands();
@@ -104,9 +105,9 @@ int CommandManager::execCommand(std::vector<std::string>& commandVec) {
     }
     else {
         int commandNum = stoi(command);
-        commands.at(commandNum - 1).exec(employeeList);
+        statusCode = commands.at(commandNum - 1).exec(employeeList);
     }
-    return SUCCESS;
+    return statusCode;
 }
 
 bool CommandManager::isValidCommand(std::vector<std::string>& commandVec) {
