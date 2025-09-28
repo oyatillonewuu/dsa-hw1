@@ -5,6 +5,32 @@ All the parts, other than tests, are solely written by me -- a human.
 I stand strongly committed to honesty and take responsibility for my claim.
 ```
 
+### Running
+
+**Note:** the scripts are targeted for Linux machines. I don't take responsibility for whether they work on MacOS or Windows.
+
+```bash
+bash build.sh
+./app
+```
+
+If the script does not work, try to compile all `*.cpp` files yourself, EXCLUDING `tests` folder.
+
+### Testing
+
+The test is only available for data_structures.
+
+**Note:** the scripts are targeted for Linux machines. I don't take responsibility for whether they work on MacOS or Windows.
+
+```bash
+bash test.sh && ./test
+```
+
+If the script does not work, you should compile source files from these directories:
+
+- data_structures
+- utils
+- tests
 
 ### Program Organization
 
