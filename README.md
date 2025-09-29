@@ -70,4 +70,4 @@ Though the above obviously outline the program behavior, here is a polished one:
 9. The control returns to `CommandManager::listen`.
 
 
-P.S.: *If you're interested how this organization came to my mind, you can view [simulOS](https://github.com/simulOS) (a project in my freshman year).
+P.S.: *If you're interested how this organization came to my mind, you can view [simulOS](https://github.com/loga4m/simulOS) (a project in my freshman year).
